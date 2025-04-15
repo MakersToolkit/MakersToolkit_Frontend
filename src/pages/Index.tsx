@@ -3,8 +3,8 @@ import React from 'react';
 import StarField from '@/components/StarField';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import PlanetSection from '@/components/PlanetSection';
-import EventsSection from '@/components/EventsSection';
+import ProductsPreview from '@/components/ProductsPreview';
+import FeaturesSection from '@/components/FeaturesSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -15,8 +15,8 @@ const Index = () => {
       
       <main>
         <HeroSection />
-        <PlanetSection />
-        <EventsSection />
+        <ProductsPreview />
+        <FeaturesSection />
       </main>
       
       <Footer />

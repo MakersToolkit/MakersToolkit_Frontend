@@ -1,19 +1,19 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const location = useLocation();
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Planets', path: '/planets' },
-    { name: 'Galaxies', path: '/galaxies' },
-    { name: 'Events', path: '/events' },
-    { name: 'About', path: '/about' }
+    { name: '홈', path: '/' },
+    { name: '제품', path: '/products' },
+    { name: '회사 소개', path: '/about' },
+    { name: '문의하기', path: '/contact' }
   ];
 
   return (
@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cosmic-stardust-teal to-cosmic-galaxy-violet"></div>
-          <span className="text-xl font-bold tracking-wider">AstroSpark</span>
+          <span className="text-xl font-bold tracking-wider">TechEdu Lab</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -30,13 +30,16 @@ const Navbar = () => {
             <Link 
               key={item.name} 
               to={item.path}
-              className="text-sm font-medium text-gray-200 hover:text-white hover:underline underline-offset-4 transition"
+              className={cn(
+                "text-sm font-medium hover:text-white hover:underline underline-offset-4 transition",
+                location.pathname === item.path ? "text-white" : "text-gray-200"
+              )}
             >
               {item.name}
             </Link>
           ))}
-          <Button className="bg-gradient-to-r from-cosmic-stardust-teal to-cosmic-galaxy-violet hover:opacity-90 transition-opacity">
-            Explore
+          <Button asChild className="bg-gradient-to-r from-cosmic-stardust-teal to-cosmic-galaxy-violet hover:opacity-90 transition-opacity">
+            <Link to="/contact">제품 문의</Link>
           </Button>
         </div>
 
@@ -61,14 +64,17 @@ const Navbar = () => {
             <Link 
               key={item.name} 
               to={item.path}
-              className="text-lg font-medium text-white py-2"
+              className={cn(
+                "text-lg font-medium py-2",
+                location.pathname === item.path ? "text-white" : "text-gray-200"
+              )}
               onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
             </Link>
           ))}
-          <Button className="bg-gradient-to-r from-cosmic-stardust-teal to-cosmic-galaxy-violet hover:opacity-90 transition-opacity w-full">
-            Explore
+          <Button asChild className="bg-gradient-to-r from-cosmic-stardust-teal to-cosmic-galaxy-violet hover:opacity-90 transition-opacity w-full">
+            <Link to="/contact" onClick={() => setIsMenuOpen(false)}>제품 문의</Link>
           </Button>
         </div>
       </div>
