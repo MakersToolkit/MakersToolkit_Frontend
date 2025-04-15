@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import StarField from '@/components/StarField';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Cpu, Wifi, Robot, ChevronDown, ChevronUp } from 'lucide-react';
+import { Cpu, Wifi, Bot, ChevronDown, ChevronUp } from 'lucide-react';
 
 const ProductsPage = () => {
   const [expandedId, setExpandedId] = React.useState<number | null>(null);
@@ -65,7 +65,7 @@ const ProductsPage = () => {
         "로봇 프레임 및 바퀴",
         "자율주행 알고리즘 튜토리얼"
       ],
-      icon: <Robot className="w-8 h-8" />
+      icon: <Bot className="w-8 h-8" />
     }
   ];
 
