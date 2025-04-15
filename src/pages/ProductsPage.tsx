@@ -1,14 +1,23 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StarField from '@/components/StarField';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Cpu, Wifi, Bot, ChevronDown, ChevronUp } from 'lucide-react';
+import { Cpu, Wifi, Bot, ChevronDown, ChevronUp, Filter } from 'lucide-react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const ProductsPage = () => {
-  const [expandedId, setExpandedId] = React.useState<number | null>(null);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const toggleExpand = (id: number) => {
     if (expandedId === id) {
@@ -23,6 +32,7 @@ const ProductsPage = () => {
       id: 1,
       name: "아두이노 스타터 키트",
       category: "입문자용",
+      level: "초급",
       price: "89,000원",
       description: "임베디드 시스템의 기초를 배우기 위한 완벽한 키트입니다. 아두이노 보드, 브레드보드, 다양한 센서와 액츄에이터, 그리고 상세한 학습 가이드가 포함되어 있습니다.",
       features: [
@@ -39,6 +49,7 @@ const ProductsPage = () => {
       id: 2,
       name: "IoT 학습 패키지",
       category: "중급자용",
+      level: "중급",
       price: "129,000원",
       description: "사물인터넷의 원리와 응용을 배울 수 있는 종합 패키지입니다. WiFi 모듈, 다양한 센서, 클라우드 연동 기능을 포함하고 있으며 실제 IoT 프로젝트를 구현할 수 있습니다.",
       features: [
@@ -55,6 +66,7 @@ const ProductsPage = () => {
       id: 3,
       name: "로보틱스 프로젝트 키트",
       category: "고급자용",
+      level: "고급",
       price: "159,000원",
       description: "움직이는 로봇을 직접 설계하고 제작할 수 있는 종합 키트입니다. 모터 제어, 센서 통합, 자율 주행 알고리즘 등 로보틱스의 핵심 개념을 학습할 수 있습니다.",
       features: [
@@ -69,23 +81,72 @@ const ProductsPage = () => {
     }
   ];
 
+  const filteredProducts = activeFilter
+    ? products.filter(product => product.level === activeFilter)
+    : products;
+
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <StarField />
       <Navbar />
       
       <main className="pt-24 pb-16 container mx-auto px-4">
+        <Breadcrumb className="mb-6">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">홈</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>제품</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">교육용 임베디드 키트</h1>
-        <p className="text-lg text-gray-300 max-w-3xl mx-auto text-center mb-16">
+        <p className="text-lg text-gray-300 max-w-3xl mx-auto text-center mb-10">
           다양한 수준과 목적에 맞춘 임베디드 교육 키트를 제공합니다. 모든 키트는 상세한 학습 가이드와 실습 자료를 포함하고 있습니다.
         </p>
         
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-full flex p-1">
+            <Button 
+              variant={activeFilter === null ? "default" : "ghost"}
+              className={`rounded-full ${activeFilter === null ? "bg-cosmic-stardust-teal" : ""}`}
+              onClick={() => setActiveFilter(null)}
+            >
+              전체
+            </Button>
+            <Button 
+              variant={activeFilter === "초급" ? "default" : "ghost"}
+              className={`rounded-full ${activeFilter === "초급" ? "bg-cosmic-stardust-teal" : ""}`}
+              onClick={() => setActiveFilter("초급")}
+            >
+              초급
+            </Button>
+            <Button 
+              variant={activeFilter === "중급" ? "default" : "ghost"}
+              className={`rounded-full ${activeFilter === "중급" ? "bg-cosmic-stardust-teal" : ""}`}
+              onClick={() => setActiveFilter("중급")}
+            >
+              중급
+            </Button>
+            <Button 
+              variant={activeFilter === "고급" ? "default" : "ghost"}
+              className={`rounded-full ${activeFilter === "고급" ? "bg-cosmic-stardust-teal" : ""}`}
+              onClick={() => setActiveFilter("고급")}
+            >
+              고급
+            </Button>
+          </div>
+        </div>
+        
         <div className="space-y-8">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div 
               key={product.id} 
               id={`product-${product.id}`}
-              className="border border-white/10 rounded-lg bg-black/40 backdrop-blur-sm overflow-hidden"
+              className="border border-white/10 rounded-lg bg-black/40 backdrop-blur-sm overflow-hidden transition-transform hover:translate-y-[-4px]"
             >
               <div className="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
@@ -101,8 +162,10 @@ const ProductsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 w-full md:w-auto">
-                  <Button variant="outline" className="w-full md:w-auto">
-                    구매 문의
+                  <Button asChild variant="outline" className="w-full md:w-auto">
+                    <Link to={`/products/${product.id}`}>
+                      상세 정보
+                    </Link>
                   </Button>
                   <Button 
                     variant="ghost" 

@@ -44,7 +44,7 @@ const ProductsPreview = () => {
                 <h3 className="text-xl font-bold mb-2">{product.name}</h3>
                 <p className="text-gray-300 mb-4">{product.description}</p>
                 <Button asChild variant="outline" className="w-full">
-                  <Link to={`/products#product-${product.id}`}>자세히 보기</Link>
+                  <Link to={`/products/${product.id}`}>자세히 보기</Link>
                 </Button>
               </CardContent>
             </Card>
